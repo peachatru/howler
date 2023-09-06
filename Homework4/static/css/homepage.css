@@ -1,0 +1,108 @@
+* {
+    font-family: 'Varela Round', sans-serif;
+}
+
+.card-body {
+    border-radius: 10px;
+    background: #eef7ff;
+    border: solid #2d007e;
+}
+#howlTextContent {
+    height: 171px; 
+    width: 70%;
+    border: solid #2d007e;
+    color: #2d007e;
+    font-size: 20px;
+
+}
+#howlPost {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+#howlButtonDiv {
+    position: relative; 
+    width: 85%;
+
+}
+#howlButton {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 10px;
+    background: #eef7ff;
+    border: solid #2d007e;
+    color: #2d007e;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.user-details {
+    display: flex;
+    align-items: center;
+}
+
+.username {
+    margin-left: 8px; /* Add spacing between [name] and @[username] */
+}
+
+.timestamp {
+    margin-left: auto; /* Push the timestamp to the far right */
+}
+
+.paragraph {
+    width: 100%;
+}
+
+#messageFeedPFP, #userPFP {
+    border: solid #2d007e;
+    background-color: white;
+}
+
+a {
+    color: #2d007e;
+    text-decoration: none;
+
+}
+
+a:hover, h3:hover {
+    color: #5610d7;
+}
+
+h6 {
+    font-size: 20px;
+}
+
+#userDot {
+    padding: 10px;
+}
+
+p {
+    font-size: 18px;
+}
+
+span {
+    color: #2d007e;
+}
+
+#userNameNavbar, #homepage-navbar {
+    color:white;
+    font-size: 20px;
+ }
+
+#homepage-navbar:hover, #userNameNavbar:hover {
+   color: #badfff;
+}
+
+#currentAuthUsername {
+    font-size:20px;
+    padding-top: 20px;
+    padding-right: 5px;
+}

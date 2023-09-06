@@ -1,0 +1,16 @@
+services:
+  proxy:
+    image: nginx:latest
+    restart: unless-stopped
+    volumes:
+      - ./proxy/default.conf.template:/etc/nginx/templates/default.conf.template
+    ports:
+      - "80:80"
+
+  hw4: 
+    build: ./Homework4
+    restart: unless-stopped
+    volumes:
+      - ./Homework4/src:/app/src
+      - ./Homework4/static/:/app/static
+      - ./Homework4/templates/:/app/templates

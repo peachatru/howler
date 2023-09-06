@@ -1,0 +1,68 @@
+#navbar-profile {
+    background: #2d007e;
+    color: white;
+}
+
+#howler-navbar {
+    padding-right: 20px;
+}
+
+#homepage-navbar {
+    padding: 10px;
+}
+
+#userPFP {
+    border: solid #2d007e;
+    background-color: white;
+}
+
+a {
+    color: #2d007e;
+    text-decoration: none;
+
+}
+
+a:hover {
+    color: #5610d7;
+}
+
+h6 {
+    font-size: 20px;
+}
+
+#userDot {
+    padding: 10px;
+}
+
+p {
+    font-size: 18px;
+}
+
+span {
+    color: #2d007e;
+}
+
+#userNameNavbar, #homepage-navbar {
+    color:white;
+    font-size: 20px;
+ }
+
+#homepage-navbar:hover, #userNameNavbar:hover {
+   color: #badfff;
+}
+
+#currentAuthUsername {
+    font-size:20px;
+    padding-top: 20px;
+    padding-right: 5px;
+}
+
+#logOutButton {
+    border-radius: 10px;
+    background: #eef7ff;
+    border: solid #2d007e;
+    color: #2d007e;
+    font-size: 20px;
+    font-weight: bolder;
+    margin-left: 20px;
+}
