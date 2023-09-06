@@ -83,22 +83,19 @@ export default {
     //     return HTTPClient.get(`/login/users/${usernameLogin}`);
     // },
     login: (username, password) => {
-      return HTTPClient.post(`/login`, { username, password })
-        .then(response => {
-          // Assuming the server sends the token in the response
-          const { token, user } = response;
-          // Set the token as a cookie
-          document.cookie = `Homework4TokenCookie=${token}; Path=/; Secure; HttpOnly; Max-Age=3600`;
-          return { token, user };
-        });
-    },    
+      let data = {
+          username: username,
+          password: password,
+      };
+      return HTTPClient.post(`/login/users`, data);
+    },  
     // Logging the authenticated user out : 
     logout: () => {
-      return HTTPClient.get(`/logout`);
+      return HTTPClient.get(`/logout/users`);
     },
     // Getting the currently "authenticated" user's object.
-    getCurrentAuthUser: (currentUser) => {
-        return HTTPClient.get(`/current/users/${currentUser}`); 
+    getCurrentAuthUser: () => {
+        return HTTPClient.get(`/current/users`); 
     },
      // Getting howls posted by all users followed by the "authenticated" user
     // in APIRoutes: follows/:currentUserId/howls

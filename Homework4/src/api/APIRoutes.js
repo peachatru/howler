@@ -1,39 +1,27 @@
 const express = require('express');
 const apiRouter = express.Router();
-
-const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const crypto = require('crypto'); // Import the crypto library for password hashing
 
-const { TokenMiddleware, generateToken } = require('../middleware/AuthMiddleware'); 
-const API_SECRET = "60d0954e20eaa0c02b382171c33c53bc18522cc6d4805eaa02e182b0";
+apiRouter.use(cookieParser());
+apiRouter.use(express.json());
+
+const db = require("./db/db_mock");
+
+const {
+    TokenMiddleware,
+    generateToken,
+    removeToken,
+} = require("../middleware/TokenMiddleware");
 
 
 /************\
 * API ROUTES *
 \************/
-let follows = require('../data/follows.json');
-let howls = require('../data/howls.json');
-let users = require('../data/users.json');
+let follows = require('./db/data/follows.json');
+let howls = require('./db/data/howls.json');
+let users = require('./db/data/users.json');
 
 apiRouter.use(express.json());
-
-
-// Add a helper function to verify passwords
-function verifyPassword(user, password) {
-    const hashedPassword = hashPassword(password, user.user.salt);
-    return user.hashed_password === hashedPassword;
-}
-
-// Add a helper function to hash passwords
-function hashPassword(password, salt) {
-    // You should use a secure password hashing library, e.g., bcrypt
-    // For demonstration purposes, we'll use a simple hash here
-    const hash = crypto.createHash('sha256');
-    hash.update(password + salt);
-    return hash.digest('hex');
-}
-
 
 //  FROM STACKOVERFLOW GUIDE: https://stackoverflow.com/questions/48315990/update-a-restful-resource-adding-an-element-or-deleting-an-element-from-its-set
 // GET    /api/Aggregation/{key}        - to get the entire set.
@@ -45,11 +33,7 @@ function hashPassword(password, salt) {
 // DELETE /api/Aggregation/{key}/{item} - to delete an item
 // getting a specific user's object
 
-// // Example protected route
-// router.get('/protected', authenticateToken, (req, res) => {
-//     // Access user data through req.user
-//     res.json({ message: 'This is a protected route.', user: req.user });
-//   });
+
 
 apiRouter.post('/register', (req, res) => {
   // Implement user registration logic here
@@ -58,75 +42,44 @@ apiRouter.post('/register', (req, res) => {
 
 // LOGIN: authenticate a user 
 // LOGIN: authenticate a user
-apiRouter.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    const user = users.find(user => user.user.username === username);
-  
-    console.log(`user.user.username: ${user.user.username}`);
-    console.log(`user.username: ${user.username}`);
-    console.log(`user: ${user}`);
+//user tries to login
+apiRouter.post("/login/users", (req, res) => {
+    if (req.body.username && req.body.password) {
+        console.log('are we in here?');
+        //if user exists using values inputted by user
+        console.log(`username: ${req.body.username} & pass: ${req.body.password}` );
+        db.getUserByCredentials(req.body.username, req.body.password)
+            .then((user) => {
+                console.log("inside user cred? "); 
+                let result = {
+                    user: user,
+                };
 
-    if (!user || !verifyPassword(user, password)) {
-      res.status(401).json({ error: 'Invalid credentials' });
-      return;
+                generateToken(req, res, user);
+
+                return res.json(result);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(err.code).json({ error: err.message });
+            });
+    } else {
+        res.status(401).json({ error: "Not authenticated" });
     }
-  
-    // Generate a JWT token for the authenticated user
-    const token = generateToken(user);
-  
-    // Set the token in a cookie
-    res.cookie(TOKEN_COOKIE_NAME, token, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 60 * 60 * 1000, // 1 hour expiration (adjust as needed)
-    });
-  
-    res.json({ token, user });
-  });
-  
-  
-  
-// apiRouter.get('/login/users/:username', TokenMiddleware, (req, res) => {
-//     const username = req.params.username; 
-//     let user = users.find(user => user.username == username); 
-//     if(user) {
-//         res.json(user);
-//     } else {
-//         res.status(404).json({error: 'User not found'});
-//     }
-//     // Implement user login logic here
-//   // After successful login, generate a JWT token and send it back to the client
-  
-// });
+});
 
 // LOGOUT: current authenticated user
 // Logout route
-apiRouter.get('/logout', (req, res) => {
-    // Destroy the user's session or perform any necessary logout logic
-    // ...
-
-    res.json({ url: '/' }); // Redirect to the login page
+apiRouter.post("/logout/users", (req, res) => {
+    removeToken(req, res);
+    res.json({ success: true });
 });
-
-
-// GET CURRENT USER:  getting a currently "authenticated" user's object
-// apiRouter.get('/current/users/:currentUser', (req, res) => {
-//     // Access the authenticated user through req.user
-//     const currentUser = req.user;
   
-//     // Your route logic here...
-//   });
-  
-apiRouter.get('/current/users/:currentUser', (req, res) => {
-    const username = req.params.currentUser; 
+// GET CURRENT AUTHENTICATED USER
+apiRouter.get('/current/users', TokenMiddleware, (req, res) => {
+    console.log(`res.json(req.user): ${req.user.username}`)
 
-    let currUser = users.find(currUser => currUser.username == username); 
-    if(currUser) {
-        res.json(currUser);
-    } else {
-        res.status(404).json({error: 'User not found'});
-
-    }
+    return res.json(req.user);
 });
 
 // GET USER: get user object by Id

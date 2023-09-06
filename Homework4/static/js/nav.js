@@ -1,47 +1,43 @@
 
 import api from './APIClient.js'; 
 
-var currentUser = localStorage.getItem('user'); 
-
-var currUserId; 
-
 // displays the Student's username and Avatar in the navbar 
-api.getCurrentAuthUser(currentUser).then(currUser => {
+var currentUser = ''; 
+var currUserId;
+api.getCurrentAuthUser().then((user) => {
+    currentUser = user; 
+    currUserId = user.id;
 
     const aTag = document.getElementById('userNameNavbar'); 
-    aTag.href = "/profile?id=" + currUser.id; 
+    aTag.href = "/profile?id=" + currentUser.id; 
     const currAuthUsername = document.getElementById("currentAuthUsername");
-    currAuthUsername.innerHTML = "@" + currUser.username; 
+    currAuthUsername.innerHTML = "@" + currentUser.username; 
 
     const currAuthAvatar = document.getElementById("userPFP"); 
-    currAuthAvatar.src = currUser.avatar; 
+    currAuthAvatar.src = currentUser.avatar; 
 
     const navbar = document.getElementById('navBarProfile');
-    navbar.href = "/profile?id=" + currUser.id; 
+    navbar.href = "/profile?id=" + currentUser.id; 
 
-    currUserId = currUser.id; 
-
-    console.log("currUsername: " + currAuthUsername);
-    console.log("curravatar: " + currAuthAvatar);
-
+    currUserId = currentUser.id; 
 });
 
-const logOutButton = document.getElementById('logOutButton');
-logOutButton.addEventListener('click', e => {
-    api.logout().then(e => {
 
+
+// START LOGOUT FUNCTIONALITY 
+let logoutButton = document.getElementById("logOutButton"); 
+
+logoutButton.addEventListener('click', () => {
+    currentUser = ""; 
+    api.getCurrentAuthUser().then((user) => {
+        currentUser = user; 
+    });
+
+    api.logout(currentUser.username, currentUser.password).then(() => {
         document.location = "/"; 
-    }).catch((err) => {
-        alert("Unable to logout"); 
-        return; 
-    })
+    });
 });
 
+// END LOGOUT FUNCTIONALITY 
 
 
-// Get id from URL
-const query = window.location.search;
-let parameters = new URLSearchParams(query);
-var id = parameters.get('id');
-
-console.log('id from url: ' + id);

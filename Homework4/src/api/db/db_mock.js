@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-let users = require('./users.json');
+let users = require('./data/users.json');
 
 //This file mimics making asynchronous request to a database
 module.exports = {
@@ -20,11 +20,13 @@ module.exports = {
             resolve(getFilteredUser(user));
           }
           else {
+            alert("this is where we stop!");
             reject({code: 401, message: "Invalid username or password"});
           }
         });
       }
       else { // if no user with provided username
+        alert("db_mock fail"); 
         reject({code: 401, message: "No such user"});
       }
     })

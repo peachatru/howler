@@ -74,7 +74,7 @@ exports.TokenMiddleware = (req, res, next) => {
     const userObject = JSON.parse(dataDecoded); 
     if(checkTokenSignature === tokenSignature ) {
         // req.user = decoded.user;
-        req.user = userObject; 
+        req.user = userObject.user; 
         // next(); //Make sure we call the next middleware
         next(); //Make sure we call the next middleware
     } else {
@@ -95,7 +95,7 @@ exports.generateToken = (req, res, user) => {
     }
 
     let headerEncode = base64url(JSON.stringify(header));
-
+    console.log("header: " + headerEncode);
     let data = {
       user: user,
       // Use the exp registered claim to expire token in 1 hour
