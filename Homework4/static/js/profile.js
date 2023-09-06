@@ -1,48 +1,46 @@
 
 import api from './APIClient.js'; 
 
-var currentUser = localStorage.getItem('user'); 
-
-var currUserId; 
-
-// displays the Student's username and Avatar in the navbar 
-api.getCurrentAuthUser(currentUser).then(currUser => {
-
-    const aTag = document.getElementById('userNameNavbar'); 
-    aTag.href = "/profile?id=" + currUser.id; 
-    const currAuthUsername = document.getElementById("currentAuthUsername");
-    currAuthUsername.innerHTML = "@" + currUser.username; 
-
-    const currAuthAvatar = document.getElementById("userPFP"); 
-    currAuthAvatar.src = currUser.avatar; 
-
-    const navbar = document.getElementById('navBarProfile');
-    navbar.href = "/profile?id=" + currUser.id; 
-
-    currUserId = currUser.id; 
-
-    console.log("currUsername: " + currAuthUsername);
-    console.log("curravatar: " + currAuthAvatar);
-
-});
-
+var currUserId;
+var currentUser = localStorage.getItem('authUserId'); 
+currUserId = localStorage.getItem('authUserId'); 
 
 // Get id from URL
 const query = window.location.search;
 let parameters = new URLSearchParams(query);
 var id = parameters.get('id');
 
+
 console.log('id from url: ' + id);
 
 //Retrieve user
 api.getUserById(id).then(userProfile => {
+    
+    const userNamePFP = document.getElementById('userProfileName');
+    const h3User = document.createElement('h3');
+    h3User.innerHTML = '@' + userProfile.username;
+
+    // <a href="">
+    const aHowl = document.createElement('a'); 
+    aHowl.href = "/profile?id=" + userProfile.id; 
+
+    // h3User.append(main);
+
+    aHowl.appendChild(h3User); 
+    userNamePFP.append(aHowl);
+
+
     //   <div class="border border-left border-right px-0" id="profileFollowsMain">
     const main = document.getElementById('userProfileBlock');
+ 
     main.append(createProfilePage(userProfile));
+
+    
 });
 
 // displays profile page
 function createProfilePage(userProfile) {
+   
     //   <div class="d-flex p-3 border-bottom">
     const item = document.createElement('div');
     item.classList.add('d-flex');
@@ -77,7 +75,6 @@ function createProfilePage(userProfile) {
 
     // <h3 class="text-body">
     const h3 = document.createElement('h3'); 
-    h3.classList.add('text-body'); 
     //     Stu Dent
     h3.innerHTML = userProfile.first_name + ' ' + userProfile.last_name;
 
@@ -87,7 +84,6 @@ function createProfilePage(userProfile) {
     //     <span class="small text-muted font-weight-normal">@student</span>
     const span2 = document.createElement('span');
     span2.classList.add('small');
-    span2.classList.add('text-muted');
     span2.classList.add('font-weight-normal'); 
     span2.innerHTML = "@" + userProfile.username; 
 
@@ -99,59 +95,70 @@ function createProfilePage(userProfile) {
     // <input type="submit" id="FollowButton" value="Follow"/>
     const followButton = document.createElement('button'); 
     followButton.setAttribute('type', 'button');
-    followButton.setAttribute('id', 'FollowButton'); 
-
-    var followingUserBool = false; 
-   
+    followButton.setAttribute('id', 'FollowButton');    
     // checks if the current user is following the user shown in the profile page
+   
+    
     if(userProfile.id == currUserId) {
         followButton.style.display = "none";
-    } else {
-        api.getAllUsersFollowedByUser(currUserId).then(userList => {
-            userList.forEach(userId => {
-                if(userProfile.id == userId.id) {
-                    followingUserBool = true;
+    } 
+
+    // Function to update the follow button based on the follow state
+    async function updateFollowButton() {
+        try {
+            const follows = await api.getAllUsersFollowedByUser(currUserId);
+            let isFollowing = follows.includes(userProfile.id);
+
+            follows.forEach(userId => {
+                if(userId.id == userProfile.id) {
+                    isFollowing = true;
                 }
-            })
-            // changes value of Button to indicate if current user is following them or not 
-            if(followingUserBool) {
+            });
+            
+            if (isFollowing) {
                 followButton.innerHTML = "Unfollow";
+
             } else {
                 followButton.innerHTML = "Follow";
-            } 
-        })
+
+            }
+        } catch (error) {
+            console.error("Error fetching follow data:", error);
+        }
     }
 
-    // updates button value and retrieves updated list of users after follow/unfollow
-    followButton.addEventListener('click', e => {
-        if(followingUserBool) {
-            followButton.innerHTML = "Follow";
-            followingUserBool = false; 
+    // Initial update of the follow button
+    updateFollowButton();
 
-            console.log("userProfile id to unfollow: " + userProfile.id); 
-            api.getUserById(userProfile.id).then(unfollowThisUser => {
-                var userToUnFollow = unfollowThisUser; 
-                api.unfollowUser(userProfile.id, currUserId); 
+    // Add click event listener for follow/unfollow
+    followButton.addEventListener('click', async () => {
+        try {
+            const follows = await api.getAllUsersFollowedByUser(currUserId);
+            let isFollowing = follows.includes(userProfile.id);
 
-                api.getAllUsersFollowedByUser(currUserId).then(usersList => {
-                })
-            })
-        } else {
-            followButton.innerHTML = "Unfollow"; 
-            followingUserBool = true; 
+            follows.forEach(userId => {
+                if(userId.id == userProfile.id) {
+                    isFollowing = true;
+                    // console.log(`userId: ${userId.id}` + ` & userPFP.id: ${userProfile.id}`); 
+                }
+            });
 
-            api.getUserById(userProfile.id).then(followThisUser => {
-                var userToFollow = followThisUser; 
-                api.followNewUser(currUserId, userToFollow); 
-
-                api.getAllUsersFollowedByUser(currUserId).then(usersList => {
-                })
-            })
+            if (isFollowing) {
+                // Unfollow
+                followButton.innerHTML = "Follow";
+                await api.unfollowUser(userProfile.id, currUserId);
+                isFollowing = false; 
+            } else {
+                // Follow
+                followButton.innerHTML = "Unfollow";
+                await api.followNewUser(currUserId, userProfile);
+                isFollowing = true;
+            }
+        } catch (error) {
+            console.error("Error updating follow status:", error);
         }
     });
-
-    // followButton.
-    // followButton.innerHTML = 'Follow'; 
+    
     followButtonDiv.appendChild(followButton);
 
     h3.appendChild(span2); 
@@ -159,6 +166,7 @@ function createProfilePage(userProfile) {
 
     profileContent.appendChild(aHowl); 
     flexDiv.appendChild(profileContent);
+
 
     item.appendChild(userAvatar);
     item.appendChild(flexDiv);
@@ -178,35 +186,9 @@ api.getAllUsersFollowedByUser(id).then(userList => {
      item.classList.add('border-left'); 
      item.classList.add('border-right'); 
      item.classList.add('px-0'); 
- 
-    //  <div class="p-3 border-bottom" id="followsBlock">
-     const followsBlock = document.createElement('div');
-     followsBlock.classList.add('p-3'); 
-     followsBlock.classList.add('border-bottom'); 
-     followsBlock.setAttribute('id', 'followsBlock'); 
 
- 
-     // <h4 class="d-flex align-items-center mb-0">
-     const h4 = document.createElement('h4');
-     h4.classList.add('d-flex');
-     h4.classList.add('align-items-center');
-     h4.classList.add('mb-0');
-     h4.innerHTML = 'Follows';
- 
-     //  <i class="fas fa-angle-down ms-auto text-primary"></i>
-     const arrowDrop = document.createElement('i'); 
-     arrowDrop.classList.add('fas');
-     arrowDrop.classList.add('fa-angle-down');
-     arrowDrop.classList.add('ms-auto');
-     arrowDrop.classList.add('text-primary');
- 
-     h4.appendChild(arrowDrop);
-     followsBlock.appendChild(h4);
-
-     main.append(followsBlock);
     userList.forEach(user => {
         main.append(displayListOfFollowers(user));
-        console.log("user id: " + user.id);
     })
 });
 
@@ -251,21 +233,19 @@ function displayListOfFollowers(user) {
  
      // <h3 class="text-body">
      const h3 = document.createElement('h3'); 
-     h3.classList.add('text-body'); 
      //     Stu Dent
      h3.innerHTML = user.first_name + ' ' + user.last_name;
 
     //     <span class="small text-muted font-weight-normal"> • </span>
     const span1 = document.createElement('span');
     span1.classList.add('small');
-    span1.classList.add('text-muted');
     span1.classList.add('font-weight-normal'); 
+    span1.setAttribute('id', 'userDot');
     span1.innerHTML = "•";
 
      //     <span class="small text-muted font-weight-normal">@student</span>
      const span2 = document.createElement('span');
      span2.classList.add('small');
-     span2.classList.add('text-muted');
      span2.classList.add('font-weight-normal'); 
      span2.innerHTML = "@" + user.username; 
 
@@ -293,94 +273,106 @@ api.getHowlsByUserId(id).then(howlsList => {
     howlsList.forEach(howl => {
         results.append(displayHowlsByUser(howl));
         console.log("howl: " + howl); 
+        const br = document.createElement('br');
+        results.appendChild(br);
     })
 });
 
 // displays all howls by user on their profile page
 function displayHowlsByUser(userData) {
    
-        // <div class="d-flex p-3 border-bottom">
-        const item = document.createElement('div');
-        item.classList.add('d-flex');
-        item.classList.add('p-3');
-        item.classList.add('border-bottom');
+    // <div class="card-body p-4 border-bottom">
+    const item = document.createElement('div');
+    item.classList.add('card-body');
+    item.classList.add('p-4');
      
-        // <img src="./images/user-pfp.png" class="rounded-circle" id="messageFeedPFP" alt="Avatar" loading="lazy" />
-        const userAvatar = document.createElement('img'); 
-        userAvatar.src = userData.user.avatar;
-        userAvatar.classList.add('rounded-circle'); 
-        userAvatar.setAttribute('id', 'messageFeedPFP'); 
-        userAvatar.setAttribute('alt', 'Avatar pic');
-        userAvatar.setAttribute('loading', 'lazy'); 
-    
-        const divBlock = document.createElement('div'); 
-        divBlock.setAttribute('id', 'howlContentBlock'); 
-    
-        // <div class="d-flex w-100 ps-3">
-        const flexDiv = document.createElement('div');
-        flexDiv.classList.add('d-flex');
-        flexDiv.classList.add('w-100');
-        flexDiv.classList.add('ps-3');
-    
-        const howlContent = document.createElement('div');
-        howlContent.setAttribute('id', 'howlContent');
-    
-        // <a href="">
-        const aHowl = document.createElement('a'); 
-        aHowl.href = "/profile?id=" + userData.userId; 
-    
-        
-        // <h6 class="text-body">
-        const h6Howl = document.createElement('h6'); 
-        h6Howl.classList.add('text-body'); 
-        //     Stu Dent
-        h6Howl.innerHTML = userData.user.first_name + ' ' + userData.user.last_name;
-    
-        //     <span class="small text-muted font-weight-normal"> • </span>
-        const span1 = document.createElement('span');
-        span1.classList.add('small');
-        span1.classList.add('text-muted');
-        span1.classList.add('font-weight-normal'); 
-        span1.innerHTML = "•";
-    
-        //     <span class="small text-muted font-weight-normal">@student</span>
-        const span2 = document.createElement('span');
-        span2.classList.add('small');
-        span2.classList.add('text-muted');
-        span2.classList.add('font-weight-normal'); 
-        span2.innerHTML = "@" + userData.user.username; 
-    
-     //     <span class="small text-muted font-weight-normal float-end">October 1st, 10:30pm</span>
-        const span3 = document.createElement('span');
-        span3.classList.add('small');
-        span3.classList.add('text-muted');
-        span3.classList.add('font-weight-normal'); 
-        span3.setAttribute('id', 'howlDatetime');
-   
-       //  span3.classList.add('float-end');
-        span3.innerHTML = userData.datetime; 
-    
-        h6Howl.appendChild(span1);
-        h6Howl.appendChild(span2);
-        h6Howl.appendChild(span3);
-    
-        aHowl.appendChild(h6Howl);
-    
-        howlContent.appendChild(aHowl);
-    
-         // <p style="line-height: 1.2;"> </p>
-         const pHowl = document.createElement('p'); 
-         pHowl.innerHTML = userData.text; 
-    
-         howlContent.appendChild(pHowl);
-    
-         flexDiv.appendChild(howlContent); 
-   
-         divBlock.appendChild(flexDiv);
-         item.appendChild(userAvatar); 
-         item.appendChild(divBlock);
-   
-       return item; 
-   
+    // <div class="d-flex flex-start">
+    const divFlex = document.createElement('div'); 
+    divFlex.classList.add('d-flex');
+    divFlex.classList.add('flex-start');
 
+    // <img src="https://robohash.org/veniamdoloresenim.png?size=64x64&amp;set=set1" class="rounded-circle shadow-1-strong me-3" id="messageFeedPFP" alt="avatar" style="height: 50px;">
+
+    const userAvatar = document.createElement('img'); 
+    userAvatar.src = userData.user.avatar;
+    userAvatar.classList.add('rounded-circle'); 
+    userAvatar.classList.add('shadow-1-strong'); 
+    userAvatar.classList.add('me-3'); 
+    userAvatar.style.height = "80%";
+
+
+    userAvatar.setAttribute('id', 'messageFeedPFP'); 
+    userAvatar.setAttribute('alt', 'avatar');
+
+    // <div id="howlContentBlock">
+    const divBlock = document.createElement('div'); 
+    divBlock.setAttribute('id', 'howlContentBlock');  
+
+    // <a href="">
+    const aHowl = document.createElement('a'); 
+    aHowl.href = "/profile?id=" + userData.userId; 
+
+     // h6
+     const h6Howl = document.createElement('h6');
+     h6Howl.classList.add('fw-bold'); 
+     h6Howl.classList.add('mb-1'); 
+ 
+      //     Stu Dent
+      h6Howl.innerHTML = userData.user.first_name + ' ' + userData.user.last_name;
+ 
+      //     <span class="small text-muted font-weight-normal"> • </span>
+      const span1 = document.createElement('span');
+      span1.classList.add('small');
+      span1.classList.add('font-weight-normal'); 
+      span1.setAttribute('id', 'userDot');
+      span1.innerHTML = "•";
+  
+      //     <span class="small text-muted font-weight-normal">@student</span>
+      const span2 = document.createElement('span');
+      span2.classList.add('small');
+      span2.classList.add('font-weight-normal'); 
+      span2.innerHTML = "@" + userData.user.username; 
+ 
+    
+     //  <div class="d-flex align-items-center mb-3">
+     const howlDate = document.createElement('div');
+     howlDate.setAttribute('id', 'howlDate');
+     howlDate.classList.add('d-flex');
+     howlDate.classList.add('align-items-center');
+     howlDate.classList.add('mb-3');
+ 
+     const pDateTime = document.createElement('p'); 
+     pDateTime.classList.add('mb-0');
+ 
+     var temp = new Date(userData.datetime);
+     var newDate = new Date(temp.getTime() - temp.getTimezoneOffset()*60*1000);
+ 
+ 
+     pDateTime.innerHTML = newDate.toLocaleString();
+ 
+     // <p style="line-height: 1.2;"> </p>
+     const pHowl = document.createElement('p'); 
+     pHowl.classList.add('mb-0');
+     pHowl.innerHTML = userData.text; 
+ 
+     // append children to parent!
+     h6Howl.appendChild(span1);
+     h6Howl.appendChild(span2);
+ 
+     aHowl.appendChild(h6Howl);
+ 
+ 
+     howlDate.appendChild(pDateTime); 
+ 
+     divBlock.appendChild(aHowl);
+     divBlock.appendChild(howlDate); 
+     divBlock.appendChild(pHowl); 
+ 
+ 
+     divFlex.appendChild(userAvatar); 
+     divFlex.appendChild(divBlock); 
+ 
+     item.appendChild(divFlex);
+ 
+    return item; 
 }

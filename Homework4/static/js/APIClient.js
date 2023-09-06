@@ -4,7 +4,7 @@ const catchError = (res) => {
     if (!res.ok) {
         if (res.status == 401) {
             localStorage.removeItem('user');
-            document.location = '/index';
+            document.location = '/';
             throw new Error("Authentication failed");
         } else {
             throw new Error(res.json().error);
@@ -79,8 +79,22 @@ const HTTPClient = {
 export default {
 
     // "Authenticating" a user. For this assignment, just receive a username and verify that it corresponds to one of the existing users to grant access.
-    login: (usernameLogin) => {
-        return HTTPClient.get(`/login/users/${usernameLogin}`);
+    // login: (usernameLogin) => {
+    //     return HTTPClient.get(`/login/users/${usernameLogin}`);
+    // },
+    login: (username, password) => {
+      return HTTPClient.post(`/login`, { username, password })
+        .then(response => {
+          // Assuming the server sends the token in the response
+          const { token, user } = response;
+          // Set the token as a cookie
+          document.cookie = `Homework4TokenCookie=${token}; Path=/; Secure; HttpOnly; Max-Age=3600`;
+          return { token, user };
+        });
+    },    
+    // Logging the authenticated user out : 
+    logout: () => {
+      return HTTPClient.get(`/logout`);
     },
     // Getting the currently "authenticated" user's object.
     getCurrentAuthUser: (currentUser) => {

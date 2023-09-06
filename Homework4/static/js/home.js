@@ -1,34 +1,7 @@
 import api from './APIClient.js'; 
 
 // Get id from URL
-const query = window.location.search;
-let parameters = new URLSearchParams(query);
-var id = parameters.get('id');
-
-
-var currentUser = localStorage.getItem('user'); 
 var currentUserId = localStorage.getItem('authUserId'); 
-
-var currUserObject; 
-
-// displays the Student's username and Avatar in the navbar 
-api.getCurrentAuthUser(currentUser).then(currUser => {
-    const aTag = document.getElementById('userNameNavbar'); 
-    aTag.href = "/profile?id=" + currUser.id; 
-
-
-    const currAuthUsername = document.getElementById("currentAuthUsername");
-    currAuthUsername.innerHTML = "@" + currUser.username; 
-
-    const currAuthAvatar = document.getElementById("userPFP"); 
-    currAuthAvatar.src = currUser.avatar; 
-
-    const navbar = document.getElementById('navBarProfile');
-    navbar.href = "/profile?id=" + currentUserId; 
-
-    currUserObject = currUser;
-});
-
 
 // displays list of howls from followers of user AND posts from user 
 updateHowlsList(); 
@@ -46,6 +19,9 @@ function updateHowlsList() {
     
         howlsList.forEach(howl => {
             results.append(createHowlHTML(howl));
+            
+            const br = document.createElement('br');
+            results.appendChild(br);
             // console.log("howl: " + howl); 
         })
     });
@@ -60,8 +36,10 @@ howlButton.addEventListener('click', e => {
      // For todays date:
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
     var newDate = new Date();
-    newDate = newDate.toJSON(); 
     console.log("newDate: " + newDate); 
+
+    newDate = newDate.toJSON(); 
+    console.log("newDate json: " + newDate); 
 
     
     let newHowl = {
@@ -92,97 +70,99 @@ howlButton.addEventListener('click', e => {
 // creates Howl HTML
 function createHowlHTML(howl) {
 
-     // <div class="d-flex p-3 border-bottom">
-     const item = document.createElement('div');
-     item.classList.add('d-flex');
-     item.classList.add('p-3');
-     item.classList.add('border-bottom');
-  
-     // <img src="./images/user-pfp.png" class="rounded-circle" id="messageFeedPFP" alt="Avatar" loading="lazy" />
-     const userAvatar = document.createElement('img'); 
-     userAvatar.src = howl.user.avatar;
-     userAvatar.classList.add('rounded-circle'); 
-     userAvatar.setAttribute('id', 'messageFeedPFP'); 
-     userAvatar.setAttribute('alt', 'avatar');
-     userAvatar.setAttribute('loading', 'lazy'); 
+    // <div class="card-body p-4 border-bottom">
+    const item = document.createElement('div');
+    item.classList.add('card-body');
+    item.classList.add('p-4');
+
+    // <div class="d-flex flex-start">
+    const divFlex = document.createElement('div'); 
+    divFlex.classList.add('d-flex');
+    divFlex.classList.add('flex-start'); 
  
-     const divBlock = document.createElement('div'); 
-     divBlock.setAttribute('id', 'howlContentBlock'); 
- 
-     // <div class="d-flex w-100 ps-3">
-     const flexDiv = document.createElement('div');
-     flexDiv.classList.add('d-flex');
-     flexDiv.classList.add('w-100');
-     flexDiv.classList.add('ps-3');
- 
-     const howlContent = document.createElement('div');
-     howlContent.setAttribute('id', 'howlContent');
- 
+    // <img src="https://robohash.org/veniamdoloresenim.png?size=64x64&amp;set=set1" class="rounded-circle shadow-1-strong me-3" id="messageFeedPFP" alt="avatar" style="height: 50px;">
+
+    const userAvatar = document.createElement('img'); 
+    userAvatar.src = howl.user.avatar;
+    userAvatar.classList.add('rounded-circle'); 
+    userAvatar.classList.add('shadow-1-strong'); 
+    userAvatar.classList.add('me-3'); 
+    userAvatar.style.height = "80%";
+
+    userAvatar.setAttribute('id', 'messageFeedPFP'); 
+    userAvatar.setAttribute('alt', 'avatar');
+
+    // <div id="howlContentBlock">
+    const divBlock = document.createElement('div'); 
+    divBlock.setAttribute('id', 'howlContentBlock');  
+
      // <a href="">
      const aHowl = document.createElement('a'); 
      aHowl.href = "/profile?id=" + howl.userId; 
- 
-     
-     // <h6 class="text-body">
-     const h6Howl = document.createElement('h6'); 
-     h6Howl.classList.add('text-body'); 
+
+     // h6
+    const h6Howl = document.createElement('h6');
+    h6Howl.classList.add('fw-bold'); 
+    h6Howl.classList.add('mb-1'); 
+
      //     Stu Dent
      h6Howl.innerHTML = howl.user.first_name + ' ' + howl.user.last_name;
- 
+
      //     <span class="small text-muted font-weight-normal"> • </span>
      const span1 = document.createElement('span');
      span1.classList.add('small');
-     span1.classList.add('text-muted');
      span1.classList.add('font-weight-normal'); 
+     span1.setAttribute('id', 'userDot');
      span1.innerHTML = "•";
  
      //     <span class="small text-muted font-weight-normal">@student</span>
      const span2 = document.createElement('span');
      span2.classList.add('small');
-     span2.classList.add('text-muted');
      span2.classList.add('font-weight-normal'); 
      span2.innerHTML = "@" + howl.user.username; 
- 
-  //     <span class="small text-muted font-weight-normal float-end">October 1st, 10:30pm</span>
-     const span3 = document.createElement('span');
-     span3.classList.add('small');
-     span3.classList.add('text-muted');
-     span3.classList.add('font-weight-normal'); 
-     span3.setAttribute('id', 'howlDatetime');
 
-    //  span3.classList.add('float-end');
-     span3.innerHTML = howl.datetime; 
- 
-     h6Howl.appendChild(span1);
-     h6Howl.appendChild(span2);
-     h6Howl.appendChild(span3);
- 
-     aHowl.appendChild(h6Howl);
- 
-     howlContent.appendChild(aHowl);
+   
+    //  <div class="d-flex align-items-center mb-3">
+    const howlDate = document.createElement('div');
+    howlDate.setAttribute('id', 'howlDate');
+    howlDate.classList.add('d-flex');
+    howlDate.classList.add('align-items-center');
+    howlDate.classList.add('mb-3');
 
-    
- 
- 
-      // <p style="line-height: 1.2;"> </p>
-      const pHowl = document.createElement('p'); 
-      pHowl.innerHTML = howl.text; 
- 
-      howlContent.appendChild(pHowl);
- 
-      flexDiv.appendChild(howlContent); 
+    const pDateTime = document.createElement('p'); 
+    pDateTime.classList.add('mb-0');
 
-      divBlock.appendChild(flexDiv);
-      item.appendChild(userAvatar); 
-      item.appendChild(divBlock);
+    var temp = new Date(howl.datetime);
+    var newDate = new Date(temp.getTime() - temp.getTimezoneOffset()*60*1000);
 
-    //   item.appendChild(flexDiv); 
-    //   console.log('this is item results: ' + item.innerHTML)
- 
-    return item; 
+
+    pDateTime.innerHTML = newDate.toLocaleString();
+
+    // <p style="line-height: 1.2;"> </p>
+    const pHowl = document.createElement('p'); 
+    pHowl.classList.add('mb-0');
+    pHowl.innerHTML = howl.text; 
+
+    // append children to parent!
+    h6Howl.appendChild(span1);
+    h6Howl.appendChild(span2);
+
+    aHowl.appendChild(h6Howl);
+
+
+    howlDate.appendChild(pDateTime); 
+
+    divBlock.appendChild(aHowl);
+    divBlock.appendChild(howlDate); 
+    divBlock.appendChild(pHowl); 
+
+
+    divFlex.appendChild(userAvatar); 
+    divFlex.appendChild(divBlock); 
+
+    item.appendChild(divFlex);
+
+   return item; 
 
 
 }
-
-
-//--------------------------------------------------------------

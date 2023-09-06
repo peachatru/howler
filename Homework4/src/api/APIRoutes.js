@@ -1,6 +1,13 @@
 const express = require('express');
 const apiRouter = express.Router();
 
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+const crypto = require('crypto'); // Import the crypto library for password hashing
+
+const { TokenMiddleware, generateToken } = require('../middleware/AuthMiddleware'); 
+const API_SECRET = "60d0954e20eaa0c02b382171c33c53bc18522cc6d4805eaa02e182b0";
+
 
 /************\
 * API ROUTES *
@@ -10,6 +17,23 @@ let howls = require('../data/howls.json');
 let users = require('../data/users.json');
 
 apiRouter.use(express.json());
+
+
+// Add a helper function to verify passwords
+function verifyPassword(user, password) {
+    const hashedPassword = hashPassword(password, user.user.salt);
+    return user.hashed_password === hashedPassword;
+}
+
+// Add a helper function to hash passwords
+function hashPassword(password, salt) {
+    // You should use a secure password hashing library, e.g., bcrypt
+    // For demonstration purposes, we'll use a simple hash here
+    const hash = crypto.createHash('sha256');
+    hash.update(password + salt);
+    return hash.digest('hex');
+}
+
 
 //  FROM STACKOVERFLOW GUIDE: https://stackoverflow.com/questions/48315990/update-a-restful-resource-adding-an-element-or-deleting-an-element-from-its-set
 // GET    /api/Aggregation/{key}        - to get the entire set.
@@ -21,20 +45,78 @@ apiRouter.use(express.json());
 // DELETE /api/Aggregation/{key}/{item} - to delete an item
 // getting a specific user's object
 
+// // Example protected route
+// router.get('/protected', authenticateToken, (req, res) => {
+//     // Access user data through req.user
+//     res.json({ message: 'This is a protected route.', user: req.user });
+//   });
+
+apiRouter.post('/register', (req, res) => {
+  // Implement user registration logic here
+  // After registration, generate a JWT token and send it back to the client
+}); 
+
 // LOGIN: authenticate a user 
-apiRouter.get('/login/users/:username', (req, res) => {
-    const username = req.params.username; 
-    let user = users.find(user => user.username == username); 
-    if(user) {
-        res.json(user);
-    } else {
-        res.status(404).json({error: 'User not found'});
-    }
-   
+// LOGIN: authenticate a user
+apiRouter.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    const user = users.find(user => user.user.username === username);
   
+    console.log(`user.user.username: ${user.user.username}`);
+    console.log(`user.username: ${user.username}`);
+    console.log(`user: ${user}`);
+
+    if (!user || !verifyPassword(user, password)) {
+      res.status(401).json({ error: 'Invalid credentials' });
+      return;
+    }
+  
+    // Generate a JWT token for the authenticated user
+    const token = generateToken(user);
+  
+    // Set the token in a cookie
+    res.cookie(TOKEN_COOKIE_NAME, token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 60 * 60 * 1000, // 1 hour expiration (adjust as needed)
+    });
+  
+    res.json({ token, user });
+  });
+  
+  
+  
+// apiRouter.get('/login/users/:username', TokenMiddleware, (req, res) => {
+//     const username = req.params.username; 
+//     let user = users.find(user => user.username == username); 
+//     if(user) {
+//         res.json(user);
+//     } else {
+//         res.status(404).json({error: 'User not found'});
+//     }
+//     // Implement user login logic here
+//   // After successful login, generate a JWT token and send it back to the client
+  
+// });
+
+// LOGOUT: current authenticated user
+// Logout route
+apiRouter.get('/logout', (req, res) => {
+    // Destroy the user's session or perform any necessary logout logic
+    // ...
+
+    res.json({ url: '/' }); // Redirect to the login page
 });
 
+
 // GET CURRENT USER:  getting a currently "authenticated" user's object
+// apiRouter.get('/current/users/:currentUser', (req, res) => {
+//     // Access the authenticated user through req.user
+//     const currentUser = req.user;
+  
+//     // Your route logic here...
+//   });
+  
 apiRouter.get('/current/users/:currentUser', (req, res) => {
     const username = req.params.currentUser; 
 

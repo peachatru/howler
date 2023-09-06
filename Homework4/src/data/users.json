@@ -4,174 +4,249 @@
     "first_name": "Stu",
     "last_name": "Dent",
     "username": "student",
-    "avatar": "https://robohash.org/veniamdoloresenim.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/veniamdoloresenim.png?size=64x64&set=set1",
+    "salt": "a9b8c7d6e5f4g3h2",
+    "password": "password",
+    "hashed_password": "$2b$10$PfGU.sZ7m/FYOtkGmb5lK.71vbQQLW30suUoNFO/jf5MWkWM1u31m"
   },
   {
     "id": 2,
     "first_name": "Gra",
     "last_name": "Duate",
     "username": "graduate",
-    "avatar": "https://robohash.org/nullaautemin.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/nullaautemin.png?size=64x64&set=set1",
+    "salt": "b2a3b4c5d6e7f8g9",
+    "password": "password",
+    "hashed_password": "$2b$10$8dJwajjZQmRFAUdSHXMa8ufWK1K0yr9nAbZ3WCV84sqkoMKluI6Oq"
   },
   {
     "id": 3,
     "first_name": "Vassily",
     "last_name": "Yeskov",
     "username": "vyeskov2",
-    "avatar": "https://robohash.org/teneturlaborenon.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/teneturlaborenon.png?size=64x64&set=set1",
+    "salt": "c3d4e5f6g7h8i9",
+    "password": "password",
+    "hashed_password": "$2b$10$ESqn0QeNnRJ.TH5l2NpUiur0j4qyOHQCLe3.eW2q5vYXm7kKrGi5q"
   },
   {
     "id": 4,
     "first_name": "Freida",
     "last_name": "Halbert",
     "username": "fhalbert3",
-    "avatar": "https://robohash.org/hicetminus.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/hicetminus.png?size=64x64&set=set1",
+    "salt": "d4e5f6g7h8i9j0",
+    "password": "password",
+    "hashed_password": "$2b$10$SueQqFNPtCMbO5bPv.lpou9pzBpCYk0RxUvwwwJ35ys7Tzb6GVo/y"
   },
   {
     "id": 5,
     "first_name": "Gloria",
     "last_name": "Macconaghy",
     "username": "gmacconaghy4",
-    "avatar": "https://robohash.org/teneturevenietfacere.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/teneturevenietfacere.png?size=64x64&set=set1",
+    "salt": "e5f6g7h8i9j0k1",
+    "password": "password",
+    "hashed_password": "$2b$10$LckFVMjR3Ryiempo7ogDT.yWJ3.QWVxXvUOvDAUXjX2834kRGpADi"
   },
   {
     "id": 6,
     "first_name": "Mariam",
     "last_name": "Tweede",
     "username": "mtweede5",
-    "avatar": "https://robohash.org/impeditipsaet.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/impeditipsaet.png?size=64x64&set=set1",
+    "salt": "f6g7h8i9j0k1l2",
+    "password": "password",
+    "hashed_password": "$2b$10$YDhad.q75wdzsGtWu5FQf.ojP9BXW5tdVuBp9GLgehwVuNmN.JY3C"
   },
   {
     "id": 7,
     "first_name": "Loraine",
     "last_name": "McDade",
     "username": "lmcdade6",
-    "avatar": "https://robohash.org/illoeamolestiae.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/illoeamolestiae.png?size=64x64&set=set1",
+    "salt": "g7h8i9j0k1l2m3",
+    "password": "password",
+    "hashed_password": "$2b$10$KtMImJVv4a4g7I4RD8/0UOoONMO/9J8XG3Tt8nY1qRlqxFnqupAxW"
   },
   {
     "id": 8,
     "first_name": "Doris",
     "last_name": "Blease",
     "username": "dblease7",
-    "avatar": "https://robohash.org/necessitatibusquisporro.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/necessitatibusquisporro.png?size=64x64&set=set1",
+    "salt": "h8i9j0k1l2m3n4",
+    "password": "password",
+    "hashed_password": "$2b$10$Pd24mWpGbXkBAPtE.px6i.nQ//cpLm2n.C49GpXI5.TEcb7G5ZcKC"
   },
   {
     "id": 9,
     "first_name": "Johann",
     "last_name": "Janata",
     "username": "jjanata8",
-    "avatar": "https://robohash.org/quiducimuseaque.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/quiducimuseaque.png?size=64x64&set=set1",
+    "salt": "i9j0k1l2m3n4o5",
+    "password": "password",
+    "hashed_password": "$2b$10$wIYrhpZnwheSIbMSdkHZruy50.7Tv7z4oGV3zHav4J2bKw9er.VuW"
   },
   {
     "id": 10,
     "first_name": "Terrell",
     "last_name": "Steenson",
     "username": "tsteenson9",
-    "avatar": "https://robohash.org/doloribusetassumenda.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/doloribusetassumenda.png?size=64x64&set=set1",
+    "salt": "j0k1l2m3n4o5p6",
+    "password": "password",
+    "hashed_password": "$2b$10$pPD8ocI9ihUig7Lj.YGzYuZwuqlrsqtDZSIWm4CcnM6fwRMvMWZne"
   },
   {
     "id": 11,
     "first_name": "Sutton",
     "last_name": "Ingry",
     "username": "singrya",
-    "avatar": "https://robohash.org/minimamagnamenim.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/minimamagnamenim.png?size=64x64&set=set1",
+    "salt": "k1l2m3n4o5p6q7",
+    "password": "password",
+    "hashed_password": "$2b$10$WQZfPiBc50duK8wDN9.WNeL93LOkTL5qAClq0kwLHuZ.dHTkiZcX6"
   },
   {
     "id": 12,
     "first_name": "Hazel",
     "last_name": "Burdas",
     "username": "hburdasb",
-    "avatar": "https://robohash.org/dolorquasunde.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/dolorquasunde.png?size=64x64&set=set1",
+    "salt": "l2m3n4o5p6q7r8",
+    "password": "password",
+    "hashed_password": "$2b$10$X7.msJrMIPJE2vilr.FfCO0bQPG3jyiHhJPMb9Hes5z7YaTq5TBOC"
   },
   {
     "id": 13,
     "first_name": "Bobbette",
     "last_name": "Steel",
     "username": "bsteelc",
-    "avatar": "https://robohash.org/consecteturmollitiaut.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/consecteturmollitiaut.png?size=64x64&set=set1",
+    "salt": "m3n4o5p6q7r8s9",
+    "password": "password",
+    "hashed_password": "$2b$10$/LYd5ACBY7Ab20ykMhdnQuhYeDb9oyTuHIvOzhjWiaa.YgFJL4WPW"
   },
   {
     "id": 14,
     "first_name": "Rosa",
     "last_name": "Ricardot",
     "username": "rricardotd",
-    "avatar": "https://robohash.org/atanimiexcepturi.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/atanimiexcepturi.png?size=64x64&set=set1",
+    "salt": "n4o5p6q7r8s9t0",
+    "password": "password",
+    "hashed_password": "$2b$10$0EWbvmojdMgd/1WQHaK0MOClYUNYHQgwg9BlhSbeomIUa0HmjauhO"
   },
   {
     "id": 15,
     "first_name": "Estele",
     "last_name": "Slatford",
     "username": "eslatforde",
-    "avatar": "https://robohash.org/eaaccusantiumlabore.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/eaaccusantiumlabore.png?size=64x64&set=set1",
+    "salt": "o5p6q7r8s9t0u1",
+    "password": "password",
+    "hashed_password": "$2b$10$ZXr2z8wep2zN1PVeoX5BIuDtsAh8mfR6.EjAHiH6bjDQtvKtT2.TC"
   },
   {
     "id": 16,
     "first_name": "Genni",
     "last_name": "Brodest",
     "username": "gbrodestf",
-    "avatar": "https://robohash.org/minimamagnamin.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/minimamagnamin.png?size=64x64&set=set1",
+    "salt": "p6q7r8s9t0u1v2",
+    "password": "password",
+    "hashed_password": "$2b$10$jneR4I0HnrAekZfBMScT5uP8/SmebffaGz9N2Yw/hgfgQhThcadgi"
   },
   {
     "id": 17,
     "first_name": "Milissent",
     "last_name": "Lippatt",
     "username": "mlippattg",
-    "avatar": "https://robohash.org/utillumea.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/utillumea.png?size=64x64&set=set1",
+    "salt": "q7r8s9t0u1v2w3",
+    "password": "password",
+    "hashed_password": "$2b$10$y3X0oJZdPhCQxCfb840U/.46UouuJyeeZFm2l7Y7eQlYMsCNuj1WS"
   },
   {
     "id": 18,
     "first_name": "Sondra",
     "last_name": "Leheude",
     "username": "sleheudeh",
-    "avatar": "https://robohash.org/eaqueeligendiipsam.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/eaqueeligendiipsam.png?size=64x64&set=set1",
+    "salt": "r8s9t0u1v2w3x4",
+    "password": "password",
+    "hashed_password": "$2b$10$a/kHHSlGt8K52pmV7sQWOOEFudtmCgiWk3UB8HkhwFv0xHtVQWoE."
   },
   {
     "id": 19,
     "first_name": "Gwenore",
     "last_name": "Durnin",
     "username": "gdurnini",
-    "avatar": "https://robohash.org/aliquidnonquo.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/aliquidnonquo.png?size=64x64&set=set1",
+    "salt": "s9t0u1v2w3x4y5",
+    "password": "password",
+    "hashed_password": "$2b$10$fJ08oahh4gRaP2nQKi1PMuI6PbbSO1QRz/j9Y25YTBzsRrlru5LmK"
   },
   {
     "id": 20,
     "first_name": "Joanne",
     "last_name": "Mungin",
     "username": "jmunginj",
-    "avatar": "https://robohash.org/voluptatibusabet.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/voluptatibusabet.png?size=64x64&set=set1",
+    "salt": "t0u1v2w3x4y5z6",
+    "password": "password",
+    "hashed_password": "$2b$10$kLJSgBgI9UcLS2IGzTnZgOEV.0obPuywfLKcdXEpTakqpKec3Yhee"
   },
   {
     "id": 21,
     "first_name": "Andres",
     "last_name": "Ayliff",
     "username": "aayliffk",
-    "avatar": "https://robohash.org/quoetet.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/quoetet.png?size=64x64&set=set1",
+    "salt": "u1v2w3x4y5z6a7",
+    "password": "password",
+    "hashed_password": "$2b$10$06e4CL7kMQuRLQeH4bMYZezRoMxYWugMDDxx95wLG8meg3gI.uk5y"
   },
   {
     "id": 22,
     "first_name": "Ann-marie",
     "last_name": "Tremblet",
     "username": "atrembletl",
-    "avatar": "https://robohash.org/ipsamolestiaeat.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/ipsamolestiaeat.png?size=64x64&set=set1",
+    "salt": "v2w3x4y5z6a7b8",
+    "password": "password",
+    "hashed_password": "$2b$10$p8F1y.P0fSOzQ5T0V7SU7Otca931tw8/MSm054TD3ZAiSEYq1Hpz6"
   },
   {
     "id": 23,
     "first_name": "Albina",
     "last_name": "Mapham",
     "username": "amaphamm",
-    "avatar": "https://robohash.org/eosinciduntquam.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/eosinciduntquam.png?size=64x64&set=set1",
+    "salt": "w3x4y5z6a7b8c9",
+    "password": "password",
+    "hashed_password": "$2b$10$IGAbxQKbGLp8Bln5F7PD8uZO8PPYWkNgzXy3IzJ3XLjJibcfThazO"
   },
   {
     "id": 24,
     "first_name": "Delbert",
     "last_name": "Anneslie",
     "username": "danneslien",
-    "avatar": "https://robohash.org/praesentiumharumaliquid.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/praesentiumharumaliquid.png?size=64x64&set=set1",
+    "salt": "x4y5z6a7b8c9d0",
+    "password": "password",
+    "hashed_password": "$2b$10$qb223GdOR3uhfe1apmFB0uj9O4dnQTwl8tYKHlufnFmVBj1nWJ3vq"
   },
   {
     "id": 25,
     "first_name": "Sterne",
     "last_name": "Cundey",
     "username": "scundeyo",
-    "avatar": "https://robohash.org/necessitatibusoccaecatifuga.png?size=64x64&set=set1"
+    "avatar": "https://robohash.org/necessitatibusoccaecatifuga.png?size=64x64&set=set1",
+    "salt": "y5z6a7b8c9d0e1",
+    "password": "password",
+    "hashed_password": "$2b$10$hdCXvXUf55bEm1hpx7VS9O8Q/H8lfng9HXFCzneV6MudycqvHMPHC"
   }
 ]

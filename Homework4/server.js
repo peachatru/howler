@@ -7,13 +7,9 @@ const path = require('path');
 // Designate the public folder as serving static resources
 app.use(express.static('static'));
 app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
 const html_dir = path.join(__dirname ,'/templates/');
-
-// app.get('/', (req, res) => {
-//   res.sendFile(`${html_dir}index.html`);
-// });
-
 
 const routes = require('./src/routes');
 
